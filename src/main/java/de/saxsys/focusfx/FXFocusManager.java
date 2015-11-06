@@ -46,7 +46,7 @@ public class FXFocusManager {
 		});
 	}
 	
-	public static void focusNodes(Parent node, ObservableList<Node> nodes) {
+	public static void setNodesToFocus(Parent node, ObservableList<Node> nodes) {
 		if (node == null) {
 			throw new IllegalArgumentException("Node is null. This is forbidden.");
 		}
@@ -60,7 +60,7 @@ public class FXFocusManager {
 		}
 	}
 	
-	public static void focusChain(Parent... parents) {
+	public static void setParentsToTraverse(Parent... parents) {
 		if (parents.length < 2) {
 			throw new IllegalArgumentException("Put more then 1 node for a focuschain");
 		}

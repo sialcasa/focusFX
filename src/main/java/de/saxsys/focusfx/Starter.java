@@ -26,7 +26,7 @@ public class Starter extends Application {
 		
 		VBox bigBox = new VBox(vbox1, vbox2, vbox3, vbox4);
 		
-		FXFocusManager.focusChain(vbox1, vbox2, vbox3, vbox4);
+		FXFocusManager.setParentsToTraverse(vbox1, vbox2, vbox3, vbox4);
 		
 		bigBox.setSpacing(5);
 		
@@ -44,7 +44,7 @@ public class Starter extends Application {
 		
 		VBox vbox = new VBox(tf1, tf2, tf3, tf4, tf5);
 		
-		FXFocusManager.focusNodes(vbox, FXCollections.observableArrayList(tf1, tf2, tf3, tf4, tf5));
+		FXFocusManager.setNodesToFocus(vbox, FXCollections.observableArrayList(tf1, tf2, tf3, tf4, tf5));
 		FXFocusManager.applyDefaultPolicy(vbox);
 		return vbox;
 	}

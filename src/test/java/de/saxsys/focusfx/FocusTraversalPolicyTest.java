@@ -101,7 +101,7 @@ public class FocusTraversalPolicyTest extends ApplicationTest {
 	
 	@Test(expected = Exception.class)
 	public void initChainWithUnmanagedParent() throws Exception {
-		FXFocusManager.focusChain(vbox1, vbox3, vbox2, new VBox());
+		FXFocusManager.setParentsToTraverse(vbox1, vbox3, vbox2, new VBox());
 	}
 	
 	@Override
@@ -112,7 +112,7 @@ public class FocusTraversalPolicyTest extends ApplicationTest {
 		tf4 = new TextField("4");
 		tf5 = new TextField("5");
 		vbox1 = new VBox(tf1, tf2, tf3, tf4, tf5);
-		FXFocusManager.focusNodes(vbox1, FXCollections.observableArrayList(tf5, tf3, tf2, tf4));
+		FXFocusManager.setNodesToFocus(vbox1, FXCollections.observableArrayList(tf5, tf3, tf2, tf4));
 		FXFocusManager.applyDefaultPolicy(vbox1);
 		
 		tf6 = new TextField("6");
@@ -121,7 +121,7 @@ public class FocusTraversalPolicyTest extends ApplicationTest {
 		tf9 = new TextField("9");
 		tf10 = new TextField("10");
 		vbox2 = new VBox(tf6, tf7, tf8, tf9, tf10);
-		FXFocusManager.focusNodes(vbox2, FXCollections.observableArrayList(tf6, tf7, tf8, tf9));
+		FXFocusManager.setNodesToFocus(vbox2, FXCollections.observableArrayList(tf6, tf7, tf8, tf9));
 		FXFocusManager.applyDefaultPolicy(vbox2);
 		
 		tf11 = new TextField("11");
@@ -130,10 +130,10 @@ public class FocusTraversalPolicyTest extends ApplicationTest {
 		tf14 = new TextField("14");
 		tf15 = new TextField("15");
 		vbox3 = new VBox(tf11, tf12, tf13, tf14, tf15);
-		FXFocusManager.focusNodes(vbox3, FXCollections.observableArrayList(tf11, tf12, tf13, tf14, tf15));
+		FXFocusManager.setNodesToFocus(vbox3, FXCollections.observableArrayList(tf11, tf12, tf13, tf14, tf15));
 		FXFocusManager.applyDefaultPolicy(vbox3);
 		
-		FXFocusManager.focusChain(vbox1, vbox3, vbox2);
+		FXFocusManager.setParentsToTraverse(vbox1, vbox3, vbox2);
 		
 		primaryStage.setScene(new Scene(new VBox(vbox1, vbox2, vbox3)));
 		primaryStage.show();
