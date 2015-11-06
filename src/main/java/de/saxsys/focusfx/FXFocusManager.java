@@ -19,9 +19,8 @@ public class FXFocusManager {
 		checkConfiguration(parent);
 		
 		FocusTraversalPolicy focusTraversalPolicy = new DefaultFocusTraversalPolicy(
-				(ObservableList<Node>) parent.getProperties()
-						.get(FXFocusManager.IMPL_FOCUS_NODES_LIST_PROPERTY));
-						
+				getFocusNodes(parent));
+				
 		List<EventTuple> forwardEvents = new ArrayList<>();
 		List<EventTuple> backwardEvents = new ArrayList<>();
 		
@@ -30,16 +29,18 @@ public class FXFocusManager {
 		
 		applyFocusTraversalPolicy(focusTraversalPolicy, parent, forwardEvents, backwardEvents);
 		Platform.runLater(() -> getTraversalPolicyForParent(parent).getFirstNode(parent).requestFocus());
-		
 	}
 	
 	
 	
 	public static void applyFocusTraversalPolicy(FocusTraversalPolicy traversal, Parent parent,
 			List<EventTuple> forwardEvents, List<EventTuple> backEvents) {
-		parent.getProperties().put(IMPL_TRAVERSAL_FOR_PARENT, traversal);
+		checkConfiguration(parent);
 		
-		parent.getChildrenUnmodifiable().forEach((node) -> {
+		parent.getProperties().put(IMPL_TRAVERSAL_FOR_PARENT, traversal);
+		ObservableList<Node> focusNodes = getFocusNodes(parent);
+		
+		focusNodes.forEach((node) -> {
 			forwardEvents.forEach(tuple -> applyForwardFocusHandling(traversal, parent, node, tuple));
 			backEvents.forEach(tuple -> applyBackwardFocusHandling(traversal, parent, node, tuple));
 		});
@@ -163,8 +164,7 @@ public class FXFocusManager {
 	}
 	
 	private static void checkConfiguration(Parent parent) {
-		ObservableList<Node> nodes = (ObservableList<Node>) parent.getProperties()
-				.get(FXFocusManager.IMPL_FOCUS_NODES_LIST_PROPERTY);
+		ObservableList<Node> nodes = getFocusNodes(parent);
 		if (nodes == null) {
 			throw new IllegalArgumentException(
 					"Use FXFocusManager.focusNodes(...) before you use the Focustraversal");
@@ -174,6 +174,13 @@ public class FXFocusManager {
 			throw new IllegalStateException(
 					"Not all nodes you've added with FXFocusManager.focusNodes(...), are children of your target container.");
 		}
+	}
+	
+	
+	
+	private static ObservableList<Node> getFocusNodes(Parent parent) {
+		return (ObservableList<Node>) parent.getProperties()
+				.get(FXFocusManager.IMPL_FOCUS_NODES_LIST_PROPERTY);
 	}
 	
 	private static Parent getContainerBefore(Parent parent) {
