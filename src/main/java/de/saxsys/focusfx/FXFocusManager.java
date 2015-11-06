@@ -10,10 +10,10 @@ import javafx.scene.Parent;
 
 public class FXFocusManager {
 	
-	private static final String IMPL_TRAVERSAL_FOR_PARENT = "IMPL_TRAVERSAL_FOR_PARENT";
-	public static final String IMPL_FOCUS_NODES_LIST_PROPERTY = "FOCUS_NODES";
-	public static final String IMPL_CONTAINER_BEFORE = "BEFORE";
-	public static final String IMPL_CONTAINER_AFTER = "FOLLOWER";
+	static final String IMPL_TRAVERSAL_FOR_PARENT = "IMPL_TRAVERSAL_FOR_PARENT";
+	static final String IMPL_FOCUS_NODES_LIST_PROPERTY = "FOCUS_NODES";
+	static final String IMPL_CONTAINER_BEFORE = "FOCUS_NODE_BEFORE";
+	static final String IMPL_CONTAINER_AFTER = "FOCUS_FOLLOWING_NODE";
 	
 	public static void applyDefaultPolicy(Parent parent) {
 		checkConfiguration(parent);
@@ -122,7 +122,6 @@ public class FXFocusManager {
 				event.consume();
 				
 				if (checkAndMoveToBeforeContainer(traversal, parent, node)) {
-					System.out.println("SYSO");
 					return;
 				}
 				
@@ -178,6 +177,7 @@ public class FXFocusManager {
 	
 	
 	
+	@SuppressWarnings("unchecked")
 	private static ObservableList<Node> getFocusNodes(Parent parent) {
 		return (ObservableList<Node>) parent.getProperties()
 				.get(FXFocusManager.IMPL_FOCUS_NODES_LIST_PROPERTY);
