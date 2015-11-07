@@ -1,8 +1,10 @@
 FocusManager for JavaFX
 =========
-First implementation of a FocusManager for JavaFX. Feedback welcome in the issuetracker.
+First implementation of a FocusManager for JavaFX. Feedback is welcome in the issuetracker. Please file enhancement requests for your use-cases.
 
+Currently I'm working on the API which is based on the [java.awt.FocusTraversalPolicy](http://www.java2s.com/Tutorial/Java/0260__Swing-Event/UseFocusTraversalPolicy.htm).
 
+The default implementation has a very basic behavior: [DefaultFocusTraversalPolicy](https://github.com/sialcasa/focusFX/blob/master/src/main/java/de/saxsys/focusfx/DefaultFocusTraversalPolicy.java). You can use it by calling ```FXFocusManager.applyDefaultPolicy```.
 
 [![Build Status](https://travis-ci.org/sialcasa/focusFX.svg?branch=master)](https://travis-ci.org/sialcasa/jfx-testrunner)
 ###Maven dependency (Sonatype Snapshot Repo)###
@@ -54,7 +56,7 @@ public class FocusExample extends Application {
 		TextField tf15 = new TextField("15");
 		VBox vbox3 = new VBox(tf11, tf12, tf13, tf14, tf15);
 		
-		FXFocusManager.setFocusOrder(vbox3);
+		FXFocusManager.setFocusOrderToChildrenRank(vbox3);
 		FXFocusManager.applyDefaultPolicy(vbox3);
 		
 		// Is also in traversal cycle, because setAllChildrenFocusTraversalEnabled was called

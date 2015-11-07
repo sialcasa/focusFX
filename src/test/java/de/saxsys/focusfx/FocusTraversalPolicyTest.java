@@ -157,7 +157,7 @@ public class FocusTraversalPolicyTest extends ApplicationTest {
 		tf15 = new TextField("15");
 		vbox3 = new VBox(tf11, tf12, tf13, tf14, tf15);
 		
-		FXFocusManager.setAllChildrenFocusTraversalEnabled(vbox3);
+		FXFocusManager.setFocusOrderToChildrenRank(vbox3);
 		FXFocusManager.applyDefaultPolicy(vbox3);
 		
 		// Is also in traversal cycle, because setAllChildrenFocusTraversalEnabled was called

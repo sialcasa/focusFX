@@ -85,7 +85,7 @@ public class FXFocusManager {
 		node.getProperties().put(IMPL_FOCUS_NODES_LIST_PROPERTY, nodes);
 	}
 	
-	public static void setAllChildrenFocusTraversalEnabled(VBox vbox) {
+	public static void setFocusOrderToChildrenRank(VBox vbox) {
 		setFocusOrder(vbox, vbox.getChildren());
 	}
 	
