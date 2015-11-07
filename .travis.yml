@@ -26,5 +26,5 @@ before_install:
 # skip install stage.
 install: true
 
-script:
-mvn clean install
+script: 
+ -./mvn clean install
