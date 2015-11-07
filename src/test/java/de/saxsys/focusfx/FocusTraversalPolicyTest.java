@@ -133,6 +133,7 @@ public class FocusTraversalPolicyTest extends ApplicationTest {
 		tf4 = new TextField("4");
 		tf5 = new TextField("5");
 		vbox1 = new VBox(tf1, tf2, tf3, tf4, tf5);
+		FXFocusManager.setFocusOrder(vbox1, FXCollections.observableArrayList(tf5, tf3, tf2, tf4));
 		FXFocusManager.applyDefaultPolicy(vbox1);
 		
 		tf6 = new TextField("6");

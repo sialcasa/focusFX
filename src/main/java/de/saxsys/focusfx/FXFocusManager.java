@@ -23,7 +23,6 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.layout.VBox;
 
 public class FXFocusManager {
 	
@@ -85,8 +84,8 @@ public class FXFocusManager {
 		node.getProperties().put(IMPL_FOCUS_NODES_LIST_PROPERTY, nodes);
 	}
 	
-	public static void setFocusOrderToChildrenRank(VBox vbox) {
-		setFocusOrder(vbox, vbox.getChildren());
+	public static void setFocusOrderToChildrenRank(Parent parent) {
+		setFocusOrder(parent, parent.getChildrenUnmodifiable());
 	}
 	
 	public static void setParentTraversalChain(Parent... parents) {
