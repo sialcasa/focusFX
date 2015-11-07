@@ -1,8 +1,18 @@
 language: java
 
+sudo: false
+
 jdk:
-    - oraclejdk8
+  - oraclejdk8
+
+install: true
+
+addons:
+  apt:
+    packages:
+    - oracle-java8-installer
 
 before_install:
 - export DISPLAY=:99.0
 - sh -e /etc/init.d/xvfb start
+- java -version
