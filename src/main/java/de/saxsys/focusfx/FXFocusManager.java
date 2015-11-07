@@ -73,7 +73,7 @@ public class FXFocusManager {
 		});
 	}
 	
-	public static void setNodesFocusTraversalEnabled(Parent node, ObservableList<Node> nodes) {
+	public static void setFocusOrder(Parent node, ObservableList<Node> nodes) {
 		if (node == null) {
 			throw new IllegalArgumentException("Node is null. This is forbidden.");
 		}
@@ -86,7 +86,7 @@ public class FXFocusManager {
 	}
 	
 	public static void setAllChildrenFocusTraversalEnabled(VBox vbox) {
-		setNodesFocusTraversalEnabled(vbox, vbox.getChildren());
+		setFocusOrder(vbox, vbox.getChildren());
 	}
 	
 	public static void setParentTraversalChain(Parent... parents) {
