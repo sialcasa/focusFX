@@ -1,34 +1,29 @@
+# use java support.
 language: java
-
-sudo: false
+jdk:
+  - oraclejdk8
 
 # use operating systems.
 os:
   - linux
 
-jdk:
-  - oraclejdk8
-
-install: true
-
-addons:
-  apt:
-    packages:
-    - oracle-java8-installer
+sudo: false
 
 # setup jobs.
 env:
   - USE_FRAMEBUFFER=true
   - USE_FRAMEBUFFER=false _JAVA_OPTIONS="-Djava.awt.headless=true -Dtestfx.robot=glass -Dtestfx.headless=true -Dprism.order=sw -Dprism.text=t2k -Dtestfx.setup.timeout=2500"
 
-before_install:
-- if [ $USE_FRAMEBUFFER = "true" ]; then export DISPLAY=:99.0 && sh -e /etc/init.d/xvfb start; fi
-- java -version
-
 # allow job to fail without framebuffer
 matrix:
   allow_failures:
   - env: USE_FRAMEBUFFER=false _JAVA_OPTIONS="-Djava.awt.headless=true -Dtestfx.robot=glass -Dtestfx.headless=true -Dprism.order=sw -Dprism.text=t2k -Dtestfx.setup.timeout=2500"
 
+# run on xvfb screen.
+before_install:
+  - if [ $USE_FRAMEBUFFER = "true" ]; then export DISPLAY=:99.0 && sh -e /etc/init.d/xvfb start; fi
 
+# skip install stage.
+install: true
 
+mvn clean install
