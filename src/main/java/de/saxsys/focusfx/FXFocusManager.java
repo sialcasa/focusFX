@@ -19,9 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javafx.application.Platform;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.layout.VBox;
 
 public class FXFocusManager {
 	
@@ -55,13 +57,23 @@ public class FXFocusManager {
 		parent.getProperties().put(IMPL_TRAVERSAL_FOR_PARENT, traversal);
 		ObservableList<Node> focusNodes = getFocusNodes(parent);
 		
+		focusNodes.addListener((ListChangeListener<Node>) c -> {
+			while (c.next()) {
+				if (c.wasAdded()) {
+					c.getAddedSubList().forEach((n) -> {
+						forwardEvents.forEach(tuple -> applyForwardFocusHandling(traversal, parent, n, tuple));
+						backEvents.forEach(tuple -> applyBackwardFocusHandling(traversal, parent, n, tuple));
+					});
+				}
+			}
+		});
 		focusNodes.forEach((node) -> {
 			forwardEvents.forEach(tuple -> applyForwardFocusHandling(traversal, parent, node, tuple));
 			backEvents.forEach(tuple -> applyBackwardFocusHandling(traversal, parent, node, tuple));
 		});
 	}
 	
-	public static void setNodesToFocus(Parent node, ObservableList<Node> nodes) {
+	public static void setNodesFocusTraversalEnabled(Parent node, ObservableList<Node> nodes) {
 		if (node == null) {
 			throw new IllegalArgumentException("Node is null. This is forbidden.");
 		}
@@ -70,12 +82,14 @@ public class FXFocusManager {
 			throw new IllegalArgumentException("Put more then 1 node for a focuschain");
 		}
 		
-		for (int i = 0; i < nodes.size(); i++) {
-			node.getProperties().put(IMPL_FOCUS_NODES_LIST_PROPERTY, nodes);
-		}
+		node.getProperties().put(IMPL_FOCUS_NODES_LIST_PROPERTY, nodes);
 	}
 	
-	public static void setParentsToTraverse(Parent... parents) {
+	public static void setAllChildrenFocusTraversalEnabled(VBox vbox) {
+		setNodesFocusTraversalEnabled(vbox, vbox.getChildren());
+	}
+	
+	public static void setParentTraversalChain(Parent... parents) {
 		if (parents.length < 2) {
 			throw new IllegalArgumentException("Put more then 1 node for a focuschain");
 		}
@@ -204,6 +218,9 @@ public class FXFocusManager {
 	private static Parent getContainerAfter(Parent parent) {
 		return (Parent) parent.getProperties().get(IMPL_CONTAINER_AFTER);
 	}
+	
+	
+	
 	
 	
 }

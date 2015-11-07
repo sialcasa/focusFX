@@ -22,6 +22,8 @@ import org.testfx.framework.junit.ApplicationTest;
 import org.testfx.util.WaitForAsyncUtils;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -48,6 +50,8 @@ public class FocusTraversalPolicyTest extends ApplicationTest {
 	private VBox vbox1;
 	private VBox vbox2;
 	private VBox vbox3;
+	private TextField tf16;
+	private TextField tf10a;
 	
 	@Test
 	public void navigateForward() throws Exception {
@@ -69,6 +73,8 @@ public class FocusTraversalPolicyTest extends ApplicationTest {
 		WaitForAsyncUtils.waitFor(2, TimeUnit.SECONDS, tf14.focusedProperty());
 		type(KeyCode.TAB);
 		WaitForAsyncUtils.waitFor(2, TimeUnit.SECONDS, tf15.focusedProperty());
+		type(KeyCode.TAB);
+		WaitForAsyncUtils.waitFor(2, TimeUnit.SECONDS, tf16.focusedProperty());
 		
 		type(KeyCode.TAB);
 		WaitForAsyncUtils.waitFor(2, TimeUnit.SECONDS, tf6.focusedProperty());
@@ -110,13 +116,13 @@ public class FocusTraversalPolicyTest extends ApplicationTest {
 		release(KeyCode.SHIFT, KeyCode.TAB);
 		
 		press(KeyCode.SHIFT, KeyCode.TAB);
-		WaitForAsyncUtils.waitFor(2, TimeUnit.SECONDS, tf15.focusedProperty());
+		WaitForAsyncUtils.waitFor(2, TimeUnit.SECONDS, tf16.focusedProperty());
 		release(KeyCode.SHIFT, KeyCode.TAB);
 	}
 	
 	@Test(expected = Exception.class)
 	public void initChainWithUnmanagedParent() throws Exception {
-		FXFocusManager.setParentsToTraverse(vbox1, vbox3, vbox2, new VBox());
+		FXFocusManager.setParentTraversalChain(vbox1, vbox3, vbox2, new VBox());
 	}
 	
 	@Override
@@ -127,7 +133,7 @@ public class FocusTraversalPolicyTest extends ApplicationTest {
 		tf4 = new TextField("4");
 		tf5 = new TextField("5");
 		vbox1 = new VBox(tf1, tf2, tf3, tf4, tf5);
-		FXFocusManager.setNodesToFocus(vbox1, FXCollections.observableArrayList(tf5, tf3, tf2, tf4));
+		FXFocusManager.setNodesFocusTraversalEnabled(vbox1, FXCollections.observableArrayList(tf5, tf3, tf2, tf4));
 		FXFocusManager.applyDefaultPolicy(vbox1);
 		
 		tf6 = new TextField("6");
@@ -136,8 +142,14 @@ public class FocusTraversalPolicyTest extends ApplicationTest {
 		tf9 = new TextField("9");
 		tf10 = new TextField("10");
 		vbox2 = new VBox(tf6, tf7, tf8, tf9, tf10);
-		FXFocusManager.setNodesToFocus(vbox2, FXCollections.observableArrayList(tf6, tf7, tf8, tf9));
+		
+		ObservableList<Node> nodesToFocus = FXCollections.observableArrayList(tf6, tf7, tf8, tf9);
+		FXFocusManager.setNodesFocusTraversalEnabled(vbox2, nodesToFocus);
 		FXFocusManager.applyDefaultPolicy(vbox2);
+		
+		// Is not in traversal chaing, because it was not added to the nodesToFocus list
+		tf10a = new TextField("10");
+		vbox2.getChildren().add(tf10a);
 		
 		tf11 = new TextField("11");
 		tf12 = new TextField("12");
@@ -145,10 +157,15 @@ public class FocusTraversalPolicyTest extends ApplicationTest {
 		tf14 = new TextField("14");
 		tf15 = new TextField("15");
 		vbox3 = new VBox(tf11, tf12, tf13, tf14, tf15);
-		FXFocusManager.setNodesToFocus(vbox3, FXCollections.observableArrayList(tf11, tf12, tf13, tf14, tf15));
+		
+		FXFocusManager.setAllChildrenFocusTraversalEnabled(vbox3);
 		FXFocusManager.applyDefaultPolicy(vbox3);
 		
-		FXFocusManager.setParentsToTraverse(vbox1, vbox3, vbox2);
+		// Is also in traversal cycle, because setAllChildrenFocusTraversalEnabled was called
+		tf16 = new TextField("16");
+		vbox3.getChildren().add(tf16);
+		
+		FXFocusManager.setParentTraversalChain(vbox1, vbox3, vbox2);
 		
 		primaryStage.setScene(new Scene(new VBox(vbox1, vbox2, vbox3)));
 		primaryStage.show();
