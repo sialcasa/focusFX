@@ -128,7 +128,7 @@
 	</build>
 	<profiles>
 		<profile>
-			<id>release-and-sign-jfx-focusfx</id>
+			<id>release-and-sign-focusfx</id>
 			<activation>
 				<property>
 					<name>performRelease</name>
