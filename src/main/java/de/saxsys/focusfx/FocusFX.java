@@ -24,7 +24,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 
-public class FXFocusManager {
+public class FocusFX {
 	
 	static final String IMPL_TRAVERSAL_FOR_PARENT = "IMPL_TRAVERSAL_FOR_PARENT";
 	static final String IMPL_FOCUS_NODES_LIST_PROPERTY = "FOCUS_NODES";
@@ -207,7 +207,7 @@ public class FXFocusManager {
 	@SuppressWarnings("unchecked")
 	private static ObservableList<Node> getFocusNodes(Parent parent) {
 		return (ObservableList<Node>) parent.getProperties()
-				.get(FXFocusManager.IMPL_FOCUS_NODES_LIST_PROPERTY);
+				.get(FocusFX.IMPL_FOCUS_NODES_LIST_PROPERTY);
 	}
 	
 	private static Parent getContainerBefore(Parent parent) {

@@ -30,7 +30,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class FocusTraversalPolicyTest extends ApplicationTest {
+public class DefaultFocusTraversalPolicyTest extends ApplicationTest {
 	
 	private TextField tf1;
 	private TextField tf2;
@@ -122,7 +122,7 @@ public class FocusTraversalPolicyTest extends ApplicationTest {
 	
 	@Test(expected = Exception.class)
 	public void initChainWithUnmanagedParent() throws Exception {
-		FXFocusManager.setParentTraversalChain(vbox1, vbox3, vbox2, new VBox());
+		FocusFX.setParentTraversalChain(vbox1, vbox3, vbox2, new VBox());
 	}
 	
 	@Override
@@ -133,8 +133,8 @@ public class FocusTraversalPolicyTest extends ApplicationTest {
 		tf4 = new TextField("4");
 		tf5 = new TextField("5");
 		vbox1 = new VBox(tf1, tf2, tf3, tf4, tf5);
-		FXFocusManager.setFocusOrder(vbox1, FXCollections.observableArrayList(tf5, tf3, tf2, tf4));
-		FXFocusManager.applyDefaultPolicy(vbox1);
+		FocusFX.setFocusOrder(vbox1, FXCollections.observableArrayList(tf5, tf3, tf2, tf4));
+		FocusFX.applyDefaultPolicy(vbox1);
 		
 		tf6 = new TextField("6");
 		tf7 = new TextField("7");
@@ -144,8 +144,8 @@ public class FocusTraversalPolicyTest extends ApplicationTest {
 		vbox2 = new VBox(tf6, tf7, tf8, tf9, tf10);
 		
 		ObservableList<Node> nodesToFocus = FXCollections.observableArrayList(tf6, tf7, tf8, tf9);
-		FXFocusManager.setFocusOrder(vbox2, nodesToFocus);
-		FXFocusManager.applyDefaultPolicy(vbox2);
+		FocusFX.setFocusOrder(vbox2, nodesToFocus);
+		FocusFX.applyDefaultPolicy(vbox2);
 		
 		// Is not in traversal chaing, because it was not added to the nodesToFocus list
 		tf10a = new TextField("10");
@@ -158,14 +158,14 @@ public class FocusTraversalPolicyTest extends ApplicationTest {
 		tf15 = new TextField("15");
 		vbox3 = new VBox(tf11, tf12, tf13, tf14, tf15);
 		
-		FXFocusManager.setFocusOrderToChildrenRank(vbox3);
-		FXFocusManager.applyDefaultPolicy(vbox3);
+		FocusFX.setFocusOrderToChildrenRank(vbox3);
+		FocusFX.applyDefaultPolicy(vbox3);
 		
 		// Is also in traversal cycle, because setAllChildrenFocusTraversalEnabled was called
 		tf16 = new TextField("16");
 		vbox3.getChildren().add(tf16);
 		
-		FXFocusManager.setParentTraversalChain(vbox1, vbox3, vbox2);
+		FocusFX.setParentTraversalChain(vbox1, vbox3, vbox2);
 		
 		primaryStage.setScene(new Scene(new VBox(vbox1, vbox2, vbox3)));
 		primaryStage.show();
