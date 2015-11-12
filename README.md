@@ -12,7 +12,7 @@ The default implementation has a very basic behavior: [DefaultFocusTraversalPoli
 <dependency>
 		<groupId>de.saxsys</groupId>
 		<artifactId>focusfx</artifactId>
-		<version>0.1-SNAPSHOT</version>
+		<version>0.1</version> <!--0.2-SNAPSHOT-->
 </dependency>
 ```
 
