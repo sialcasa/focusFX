@@ -125,17 +125,23 @@ public class FocusFX {
 			EventTuple tuple) {
 		node.addEventFilter(tuple.getEvent(), event -> {
 			if (tuple.getCheck().test(event)) {
-				event.consume();
 				
 				if (checkAndMoveToNextContainer(traversal, parent, node)) {
+					event.consume();
 					return;
 				}
 				
 				Node nodeAfter = traversal.getNodeAfter(parent, node);
-				while (!nodeAfter.isFocusTraversable()) {
+				while (nodeAfter != null && !nodeAfter.isFocusTraversable()) {
 					nodeAfter = traversal.getNodeAfter(parent, nodeAfter);
 				}
+				
+				if (nodeAfter == null) {
+					return;
+				}
+				
 				nodeAfter.requestFocus();
+				event.consume();
 			}
 		});
 		
@@ -146,17 +152,23 @@ public class FocusFX {
 			EventTuple tuple) {
 		node.addEventFilter(tuple.getEvent(), event -> {
 			if (tuple.getCheck().test(event)) {
-				event.consume();
-				
 				if (checkAndMoveToBeforeContainer(traversal, parent, node)) {
+					event.consume();
+					return;
+				}
+				Node nodeBefore = traversal.getNodeBefore(parent, node);
+				while (nodeBefore != null && !nodeBefore.isFocusTraversable()) {
+					nodeBefore = traversal.getNodeBefore(parent, nodeBefore);
+				}
+				
+				
+				if (nodeBefore == null) {
 					return;
 				}
 				
-				Node nodeBefore = traversal.getNodeBefore(parent, node);
-				while (!nodeBefore.isFocusTraversable()) {
-					nodeBefore = traversal.getNodeBefore(parent, nodeBefore);
-				}
+				
 				nodeBefore.requestFocus();
+				event.consume();
 			}
 		});
 		
