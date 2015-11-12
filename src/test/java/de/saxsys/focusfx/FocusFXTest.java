@@ -219,8 +219,7 @@ public class FocusFXTest extends ApplicationTest {
 		tf5 = new TextField("5");
 		vbox1 = new VBox(tf1, tf2, tf3, tf4, tf5);
 		
-		FocusFX.setFocusOrderToChildrenRank(vbox1);
-		FocusFX.applyFocusTraversalPolicy(focusTraversalPolicy1, vbox1,
+		FocusFX.applyFocusTraversalPolicy(focusTraversalPolicy1, vbox1, vbox1.getChildren(),
 				FXCollections.observableArrayList(EventTuple.TAB_FORWARD),
 				FXCollections.observableArrayList(EventTuple.SHIFT_TAB_BACKWARDS));
 				
@@ -232,8 +231,7 @@ public class FocusFXTest extends ApplicationTest {
 		tf10 = new TextField("10");
 		vbox2 = new VBox(tf6, tf7, tf8, tf9, tf10);
 		
-		FocusFX.setFocusOrderToChildrenRank(vbox2);
-		FocusFX.applyFocusTraversalPolicy(focusTraversalPolicy2, vbox2,
+		FocusFX.applyFocusTraversalPolicy(focusTraversalPolicy2, vbox2, vbox2.getChildren(),
 				FXCollections.observableArrayList(EventTuple.TAB_FORWARD),
 				FXCollections.observableArrayList(EventTuple.SHIFT_TAB_BACKWARDS));
 				

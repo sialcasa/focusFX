@@ -133,8 +133,7 @@ public class DefaultFocusTraversalPolicyTest extends ApplicationTest {
 		tf4 = new TextField("4");
 		tf5 = new TextField("5");
 		vbox1 = new VBox(tf1, tf2, tf3, tf4, tf5);
-		FocusFX.setFocusOrder(vbox1, FXCollections.observableArrayList(tf5, tf3, tf2, tf4));
-		FocusFX.applyDefaultPolicy(vbox1);
+		FocusFX.applyDefaultPolicy(vbox1, FXCollections.observableArrayList(tf5, tf3, tf2, tf4));
 		
 		tf6 = new TextField("6");
 		tf7 = new TextField("7");
@@ -144,8 +143,7 @@ public class DefaultFocusTraversalPolicyTest extends ApplicationTest {
 		vbox2 = new VBox(tf6, tf7, tf8, tf9, tf10);
 		
 		ObservableList<Node> nodesToFocus = FXCollections.observableArrayList(tf6, tf7, tf8, tf9);
-		FocusFX.setFocusOrder(vbox2, nodesToFocus);
-		FocusFX.applyDefaultPolicy(vbox2);
+		FocusFX.applyDefaultPolicy(vbox2, nodesToFocus);
 		
 		// Is not in traversal chaing, because it was not added to the nodesToFocus list
 		tf10a = new TextField("10");
@@ -158,8 +156,7 @@ public class DefaultFocusTraversalPolicyTest extends ApplicationTest {
 		tf15 = new TextField("15");
 		vbox3 = new VBox(tf11, tf12, tf13, tf14, tf15);
 		
-		FocusFX.setFocusOrderToChildrenRank(vbox3);
-		FocusFX.applyDefaultPolicy(vbox3);
+		FocusFX.applyDefaultPolicy(vbox3, vbox3.getChildren());
 		
 		// Is also in traversal cycle, because setAllChildrenFocusTraversalEnabled was called
 		tf16 = new TextField("16");
