@@ -18,7 +18,7 @@
 	<groupId>de.saxsys</groupId>
 	<artifactId>focusfx</artifactId>
 	<packaging>jar</packaging>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.2-SNAPSHOT</version>
 	<name>focusFX</name>
 	<description>Focus Manager for JavaFX</description>
 	<url>http://www.saxsys.de</url>
