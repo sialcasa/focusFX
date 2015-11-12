@@ -38,8 +38,7 @@ public class FocusFXTest extends ApplicationTest {
 	public void navigateForward() throws Exception {
 		WaitForAsyncUtils.waitFor(2, TimeUnit.SECONDS, tf1.focusedProperty());
 		type(KeyCode.TAB);
-		WaitForAsyncUtils.waitFor(2, TimeUnit.SECONDS, tf2.focusedProperty());
-		type(KeyCode.TAB);
+		// SKIPPED TF 2 because of Focus Rules
 		WaitForAsyncUtils.waitFor(2, TimeUnit.SECONDS, tf3.focusedProperty());
 		type(KeyCode.TAB);
 		WaitForAsyncUtils.waitFor(2, TimeUnit.SECONDS, tf4.focusedProperty());
@@ -144,6 +143,10 @@ public class FocusFXTest extends ApplicationTest {
 				
 				if (indexOfFocusOwner == children.size() - 1) {
 					return null; // Exit Focus Cycle
+				}
+				
+				if (indexOfFocusOwner == 0) {
+					return vbox1.getChildren().get(2);
 				}
 				
 				return vbox1.getChildren().get(indexOfFocusOwner + 1);
