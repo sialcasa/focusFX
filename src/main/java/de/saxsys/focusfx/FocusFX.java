@@ -27,17 +27,15 @@ import javafx.scene.Parent;
 public class FocusFX {
 	
 	static final String IMPL_TRAVERSAL_FOR_PARENT = "IMPL_TRAVERSAL_FOR_PARENT";
-	static final String IMPL_FOCUS_NODES_LIST_PROPERTY = "FOCUS_NODES";
 	static final String IMPL_CONTAINER_BEFORE = "FOCUS_NODE_BEFORE";
 	static final String IMPL_CONTAINER_AFTER = "FOCUS_FOLLOWING_NODE";
 	
 	public static void applyDefaultPolicy(Parent parent, ObservableList<Node> focusOrder) {
-		setFocusOrder(parent, focusOrder);
 		
-		checkConfiguration(parent);
+		checkConfiguration(parent, focusOrder);
 		
 		FocusTraversalPolicy focusTraversalPolicy = new DefaultFocusTraversalPolicy(
-				getFocusOrder(parent));
+				focusOrder);
 				
 		List<EventTuple> forwardEvents = new ArrayList<>();
 		List<EventTuple> backwardEvents = new ArrayList<>();
@@ -55,14 +53,11 @@ public class FocusFX {
 	public static void applyFocusTraversalPolicy(FocusTraversalPolicy traversal, Parent parent,
 			ObservableList<Node> nodesToFocus,
 			List<EventTuple> forwardEvents, List<EventTuple> backEvents) {
-		if (getFocusOrder(parent) == null) {
-			setFocusOrder(parent, nodesToFocus);
-		}
-		
-		checkConfiguration(parent);
+			
+		checkConfiguration(parent, nodesToFocus);
 		
 		parent.getProperties().put(IMPL_TRAVERSAL_FOR_PARENT, traversal);
-		ObservableList<Node> focusNodes = getFocusOrder(parent);
+		ObservableList<Node> focusNodes = nodesToFocus;
 		
 		focusNodes.addListener((ListChangeListener<Node>) c -> {
 			while (c.next()) {
@@ -111,22 +106,6 @@ public class FocusFX {
 	 * 
 	 * 
 	 */
-	
-	private static void setFocusOrder(Parent node, ObservableList<Node> nodes) {
-		if (node == null) {
-			throw new IllegalArgumentException("Node is null. This is forbidden.");
-		}
-		
-		if (nodes.size() < 1) {
-			throw new IllegalArgumentException("Put more then 1 node for a focuschain");
-		}
-		
-		node.getProperties().put(IMPL_FOCUS_NODES_LIST_PROPERTY, nodes);
-	}
-	
-	private static void setFocusOrderToChildrenRank(Parent parent) {
-		setFocusOrder(parent, parent.getChildrenUnmodifiable());
-	}
 	
 	@SuppressWarnings("unchecked")
 	private static void applyForwardFocusHandling(FocusTraversalPolicy traversal, Parent parent, Node node,
@@ -209,8 +188,7 @@ public class FocusFX {
 		return (FocusTraversalPolicy) container.getProperties().get(IMPL_TRAVERSAL_FOR_PARENT);
 	}
 	
-	private static void checkConfiguration(Parent parent) {
-		ObservableList<Node> nodes = getFocusOrder(parent);
+	private static void checkConfiguration(Parent parent, ObservableList<Node> nodes) {
 		if (nodes == null) {
 			throw new IllegalArgumentException(
 					"Use FXFocusManager.focusNodes(...) before you use the Focustraversal");
@@ -224,11 +202,6 @@ public class FocusFX {
 	
 	
 	
-	@SuppressWarnings("unchecked")
-	private static ObservableList<Node> getFocusOrder(Parent parent) {
-		return (ObservableList<Node>) parent.getProperties()
-				.get(FocusFX.IMPL_FOCUS_NODES_LIST_PROPERTY);
-	}
 	
 	private static Parent getContainerBefore(Parent parent) {
 		return (Parent) parent.getProperties().get(IMPL_CONTAINER_BEFORE);
