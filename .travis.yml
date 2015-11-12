@@ -1,4 +1,4 @@
-# use java support .
+# use java support.
 language: java
 jdk:
   - oraclejdk8
@@ -7,7 +7,9 @@ jdk:
 os:
   - linux
 
+# run in container und keep gradle cache.
 sudo: false
+
 
 # setup jobs.
 env:
@@ -25,4 +27,3 @@ before_install:
 
 # skip install stage.
 install: true
-
