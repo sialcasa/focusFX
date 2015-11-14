@@ -7,6 +7,8 @@ Currently I'm working on the API which is based on the [java.awt.FocusTraversalP
 The default implementation has a very basic behavior: [DefaultFocusTraversalPolicy](https://github.com/sialcasa/focusFX/blob/master/src/main/java/de/saxsys/focusfx/DefaultFocusTraversalPolicy.java). You can use it by calling ```FXFocusManager.applyDefaultPolicy```.
 
 [![Build Status](https://travis-ci.org/sialcasa/focusFX.svg?branch=master)](https://travis-ci.org/sialcasa/jfx-testrunner)
+[![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](http://opensource.org/licenses/Apache-2.0)
+
 ###Maven dependency (Sonatype Snapshot Repo)###
 ```
 <dependency>
